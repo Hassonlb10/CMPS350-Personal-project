@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const renderLoginState = (logged_in_user) => {
         updateDashboardLinkVisibility();
-
+    
         console.log(logged_in_user);
         console.log("Logined in user is", logged_in_user.name);
         const userPopup = document.getElementById("userPopup");
@@ -143,19 +143,19 @@ document.addEventListener("DOMContentLoaded", async function () {
         userName.textContent = logged_in_user.name;
         const balance = document.createElement("p");
         balance.textContent = "Balance: " + logged_in_user.balance + " QR";
-
+    
         // Create an h4 for "Past Purchases"
         const pastPurchasesHeading = document.createElement("h4");
         pastPurchasesHeading.textContent = "Past Purchases";
         pastPurchasesHeading.classList.add("past-purchases-heading");
-
+    
         // Create a list to display past purchases
         const pastPurchasesList = document.createElement("ul");
         pastPurchasesList.classList.add("past-purchases");
-
+    
         // Loop through past purchases and create list items for each
         console.log("past history", logged_in_user);
-
+    
         if (logged_in_user.purchasedItems && logged_in_user.purchasedItems.length > 0) {
             logged_in_user.purchasedItems.forEach(purchase => {
                 const listItem = document.createElement("li");
@@ -167,11 +167,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             listItem.textContent = "No past purchases";
             pastPurchasesList.appendChild(listItem);
         }
-
-
+    
         const signOutButton = document.createElement("button");
         signOutButton.textContent = "Sign Out";
-
+    
         userPopup.innerHTML = "";
         userPopup.appendChild(userimage);
         userPopup.appendChild(userName);
@@ -179,12 +178,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         userPopup.appendChild(pastPurchasesHeading); // Append the h4 heading
         userPopup.appendChild(pastPurchasesList); // Append the past purchases list
         userPopup.appendChild(signOutButton);
-
+    
         signOutButton.addEventListener("click", () => {
             console.log("is trying to sign out", logged_in_user);
             renderSignOut(logged_in_user);
         });
     };
+    
 
 
     let logged_in_user = [];

@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { fetchProducts } from '@/public/api-calls/products';
 import { fetchUsers } from '@/public/api-calls/users';
 
+
+
 const StatisticsPage = () => {
     const [totalPurchases, setTotalPurchases] = useState(0);
     const [topProducts, setTopProducts] = useState([]);
@@ -13,7 +15,7 @@ const StatisticsPage = () => {
     const [totalUsers, setTotalUsers] = useState(0);
     const [averageProductPrice, setAverageProductPrice] = useState(0);
     const [totalProductsSoldFromPurchases, setTotalProductsSoldFromPurchases] = useState(0);
-
+    const [totalPurchasedItems, setTotalPurchasedItems] = useState(0);
 
     useEffect(() => {
         const fetchStatistics = async () => {
@@ -69,9 +71,18 @@ const StatisticsPage = () => {
                 }, 0);
                 setTotalProductsSoldFromPurchases(totalProductsSoldFromPurchases);
 
-                
-
-                
+                // Calculating total number of purchased items
+                const totalPurchasedItems = users.reduce((acc, curr) => {
+                    if (curr.purchasedItems) {
+                        return acc + curr.purchasedItems.length;
+                    }
+                    return acc;
+                    
+                }, 0);
+                //console.log("purchasedItems", acc);
+                setTotalPurchasedItems(totalPurchasedItems);
+                console.log("purchasedItems1", totalPurchasedItems);
+                console.log("purchasedItems2", setTotalPurchasedItems);
 
             } catch (error) {
                 console.error('Error fetching statistics:', error);
@@ -82,12 +93,12 @@ const StatisticsPage = () => {
 
     return (
         <div className='text-white flex flex-col justify-center items-center h-auto'>
-            <h1 className='text-7xl font-bold mb-20  mt-20 text-center'><span className='class91BBCA'>Capfashion</span> Statistics</h1>
+            <h1 className='text-7xl font-bold mb-20 mt-20 text-center'><span className='class91BBCA'>Capfashion</span> Statistics</h1>
             <div className='mt-8'>
                 <h2 className='text-2xl font-bold mb-2'>Total Number of Products: {totalProductsSold}</h2>
             </div>
             <div className='mb-8'>
-                <h2 className='text-2xl font-bold mb-2 '>Total Purchases: {totalProductsSoldFromPurchases}</h2>
+                <h2 className='text-2xl font-bold mb-2'>Total Purchases: {totalProductsSoldFromPurchases}</h2>
             </div>
             <div className='mb-8'>
                 <h2 className='text-2xl font-bold mb-2'>Top 3 Products:</h2>
@@ -119,12 +130,14 @@ const StatisticsPage = () => {
                     </div>
                 )}
             </div>
-
             <div>
                 <h2 className='text-2xl font-bold mb-2'>Total Number of Registered Users: {totalUsers}</h2>
             </div>
             <div className='mt-8'>
                 <h2 className='text-2xl font-bold mb-2'>Average Product Price: {averageProductPrice}</h2>
+            </div>
+            <div className='mt-8'>
+                <h2 className='text-2xl font-bold mb-2'>Total Purchased Items: {totalPurchasedItems}</h2>
             </div>
         </div>
     );

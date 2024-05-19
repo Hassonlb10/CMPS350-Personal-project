@@ -4,6 +4,7 @@ export async function getAllUsers() {
     return prisma.user.findMany({
         include: {
             past_purchases: true,
+            purchasedItems: true,
         }
     });
 }
