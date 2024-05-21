@@ -41,7 +41,12 @@ const StatisticsPage = () => {
                 const users = usersResponse;
 
                 // Calculating total amount transferred
-                const totalAmountTransferred = users.reduce((acc, curr) => acc + curr.balance, 0);
+                const totalAmountTransferred = users.reduce((acc, curr) => {
+                    if (curr.purchasedItems) {
+                        return acc + curr.purchasedItems.reduce((subAcc, item) => subAcc + item.price, 0);
+                    }
+                    return acc;
+                }, 0);
                 setTotalAmountTransferred(totalAmountTransferred);
 
                 // Finding highest paid seller
@@ -95,10 +100,16 @@ const StatisticsPage = () => {
         <div className='text-white flex flex-col justify-center items-center h-auto'>
             <h1 className='text-7xl font-bold mb-20 mt-20 text-center'><span className='class91BBCA'>Capfashion</span> Statistics</h1>
             <div className='mt-8'>
-                <h2 className='text-2xl font-bold mb-2'>Total Number of Products: {totalProductsSold}</h2>
+                <h2 className='text-2xl font-bold mb-2'>Total Quantity of Products: {totalProductsSold}</h2>
             </div>
             <div className='mb-8'>
-                <h2 className='text-2xl font-bold mb-2'>Total Purchases: {totalProductsSoldFromPurchases}</h2>
+                <h2 className='text-2xl font-bold mb-2'>Total Listed Products: {totalProductsSoldFromPurchases}</h2>
+            </div>
+            <div className='mt-8'>
+                <h2 className='text-2xl font-bold mb-2'>Total Purchased Items: {totalPurchasedItems}</h2>
+            </div>
+            <div className='mt-8'>
+                <h2 className='text-2xl font-bold mb-2'>Total Amount of Sale: {totalAmountTransferred}</h2>
             </div>
             <div className='mb-8'>
                 <h2 className='text-2xl font-bold mb-2'>Top 3 Products:</h2>
@@ -110,17 +121,7 @@ const StatisticsPage = () => {
                     ))}
                 </ul>
             </div>
-            <div>
-                <h2 className='text-2xl font-bold mb-2'>Products Never Purchased:</h2>
-                <ul>
-                    {unpurchasedProducts.map((product) => (
-                        <li key={product.id} className='text-xl mb-2'>{product.productname}</li>
-                    ))}
-                </ul>
-            </div>
-            <div className='mt-8'>
-                <h2 className='text-2xl font-bold mb-2'>Total Amount Transferred: {totalAmountTransferred}</h2>
-            </div>
+            
             <div>
                 <h2 className='text-2xl font-bold mb-2'>Highest Paid Seller:</h2>
                 {highestPaidSeller && (
@@ -136,9 +137,7 @@ const StatisticsPage = () => {
             <div className='mt-8'>
                 <h2 className='text-2xl font-bold mb-2'>Average Product Price: {averageProductPrice}</h2>
             </div>
-            <div className='mt-8'>
-                <h2 className='text-2xl font-bold mb-2'>Total Purchased Items: {totalPurchasedItems}</h2>
-            </div>
+            
         </div>
     );
 };
